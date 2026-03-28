@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Multifunções</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>Calculadora Multifunções</h1>
+            <p>Média de notas, operações, IMC, circunferência e diferença entre datas.</p>
+        </header>
+
+        <main class="grid">
+            <!-- OPERAÇÕES -->
+            <section class="card card-operations">
+                <h2>Operações</h2>
+                <p class="subtitle">
+                    Introduza os valores, aplique funções se quiser, e depois escolha uma operação básica.
+                </p>
+
+                <button class="btn btn-secondary help-toggle" type="button" onclick="alternarAjudaOperacoes()">
+                    Mostrar / Esconder ajuda
+                </button>
+
+                <div id="ajudaOperacoes" class="help-box hidden">
+                    <h3>Como usar</h3>
+                    <p>
+                        1. Introduza <strong>Valor 1</strong> e <strong>Valor 2</strong>.<br>
+                        2. Pode escrever números, decimais ou frações, por exemplo <strong>3/4</strong>.<br>
+                        3. Também pode usar π, e, M1, M2, o teclado numérico e o botão <strong>/</strong> para escrever frações.<br>
+                        4. As funções científicas atuam diretamente sobre o campo ativo.<br>
+                        5. Escolha uma operação básica: <strong>+</strong>, <strong>−</strong>, <strong>×</strong> ou <strong>÷</strong>.
+                    </p>
+
+                    <h3>Funções avançadas mostradas automaticamente</h3>
+                    <p>
+                        Fração irredutível, √(v1), √(v2), [v1]√(v2), log₍v1₎(v2), v1!, v2!, C(v1, v2), A(v1, v2), m.d.c.(v1, v2), m.m.c.(v1, v2), fatorização em fatores primos de v1 e v2, resto da divisão.
+                    </p>
+
+                    <h3>Condições</h3>
+                    <ul>
+                        <li>√(v1) e √(v2) só aparecem se o valor for ≥ 0.</li>
+                        <li>[v1]√(v2) exige v1 inteiro e v1 ≥ 2. Se v2 for negativo, v1 tem de ser ímpar.</li>
+                        <li>log₍v1₎(v2) exige v1 > 0, v1 ≠ 1 e v2 > 0.</li>
+                        <li>Fatoriais só aparecem para inteiros ≥ 0.</li>
+                        <li>Combinações e arranjos exigem v1 e v2 inteiros e v1 ≥ v2 ≥ 0.</li>
+                        <li>m.d.c. e m.m.c. usam os valores absolutos dos inteiros.</li>
+                        <li>cos⁻¹ e sen⁻¹ só funcionam para valores entre -1 e 1.</li>
+                        <li>√ só funciona nos reais para valores ≥ 0.</li>
+                    </ul>
+                </div>
+
+                <div class="input-group">
+                    <label for="v1">Valor 1</label>
+                    <div class="input-field" id="fieldWrap1">
+                        <i class="fa-solid fa-calculator"></i>
+                        <input type="text" id="v1" inputmode="text" placeholder="Digite um número ou fração">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="v2">Valor 2</label>
+                    <div class="input-field" id="fieldWrap2">
+                        <i class="fa-solid fa-calculator"></i>
+                        <input type="text" id="v2" inputmode="text" placeholder="Digite um número ou fração">
+                    </div>
+                </div>
+
+                <div class="special-grid">
+                    <button type="button" id="btnPi" onclick="usarPi()">π</button>
+                    <button type="button" id="btnE" onclick="usarE()">e</button>
+                    <button type="button" id="btnUsarM1" onclick="usarM1()">M1</button>
+                    <button type="button" id="btnUsarM2" onclick="usarM2()">M2</button>
+                    <button type="button" id="btnCE" onclick="limparCamposOperacoes()">CE</button>
+                </div>
+
+                <div class="memory-status">
+                    <div class="memory-chip memory-chip-m1" id="memoryChip1">
+                        <strong>M1</strong>
+                        <span id="memoria1Valor">vazia</span>
+                    </div>
+                    <div class="memory-chip memory-chip-m2" id="memoryChip2">
+                        <strong>M2</strong>
+                        <span id="memoria2Valor">vazia</span>
+                    </div>
+                </div>
+
+                <div class="number-pad">
+                    <button type="button" onclick="inserirTextoNoCampo('0')">0</button>
+                    <button type="button" onclick="inserirTextoNoCampo('1')">1</button>
+                    <button type="button" onclick="inserirTextoNoCampo('2')">2</button>
+                    <button type="button" onclick="inserirTextoNoCampo('3')">3</button>
+                    <button type="button" onclick="inserirTextoNoCampo('4')">4</button>
+
+                    <button type="button" onclick="inserirTextoNoCampo('5')">5</button>
+                    <button type="button" onclick="inserirTextoNoCampo('6')">6</button>
+                    <button type="button" onclick="inserirTextoNoCampo('7')">7</button>
+                    <button type="button" onclick="inserirTextoNoCampo('8')">8</button>
+                    <button type="button" onclick="inserirTextoNoCampo('9')">9</button>
+
+                    <button type="button" onclick="inserirTextoNoCampo('.')">.</button>
+                    <button type="button" onclick="inserirTextoNoCampo('/')">/</button>
+                    <button type="button" onclick="inserirTextoNoCampo('-')">−</button>
+                    <button type="button" onclick="apagarUltimoDoCampo()">⌫</button>
+                    <button type="button" onclick="limparCampoAtivo()">C</button>
+                </div>
+
+                <div class="sci-grid">
+                    <button type="button" id="func-cos" onclick="aplicarFuncaoCampo('cos')">cos</button>
+                    <button type="button" id="func-acos" onclick="aplicarFuncaoCampo('acos')">cos<sup>-1</sup></button>
+                    <button type="button" id="func-sin" onclick="aplicarFuncaoCampo('sin')">sen</button>
+                    <button type="button" id="func-asin" onclick="aplicarFuncaoCampo('asin')">sen<sup>-1</sup></button>
+                    <button type="button" id="func-square" onclick="aplicarFuncaoCampo('square')">x²</button>
+
+                    <button type="button" id="func-tan" onclick="aplicarFuncaoCampo('tan')">tg</button>
+                    <button type="button" id="func-atan" onclick="aplicarFuncaoCampo('atan')">tg<sup>-1</sup></button>
+                    <button type="button" id="func-sqrt" onclick="aplicarFuncaoCampo('sqrt')">√</button>
+                    <button type="button" id="btnGraus" class="mode-active" onclick="definirModoAngular('graus')">Graus</button>
+                    <button type="button" id="btnRad" onclick="definirModoAngular('rad')">Rad</button>
+                </div>
+
+                <div id="mensagemOperacoes" class="math-message hidden"></div>
+
+                <div class="operator-grid">
+                    <button type="button" id="btnSoma" onclick="somar()">+</button>
+                    <button type="button" id="btnSubtracao" onclick="subtrair()">−</button>
+                    <button type="button" id="btnMultiplicacao" onclick="multiplicar()">×</button>
+                    <button type="button" id="btnDivisao" onclick="dividir()">÷</button>
+                </div>
+
+                <div class="result-box">
+                    <div id="extraResultados"></div>
+                </div>
+            </section>
+
+            <!-- IMC -->
+            <section class="card card-imc">
+                <h2>IMC</h2>
+                <p class="subtitle">Peso ideal, IMC, classificação, recomendação e sugestão alimentar.</p>
+
+                <div class="input-group">
+                    <label for="altura">Altura (m)</label>
+                    <div class="input-field">
+                        <i class="fa-solid fa-ruler-vertical"></i>
+                        <input type="number" id="altura" step="0.01" placeholder="Ex: 1.80">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="peso">Peso (kg)</label>
+                    <div class="input-field">
+                        <i class="fa-solid fa-weight-scale"></i>
+                        <input type="number" id="peso" step="0.01" placeholder="Ex: 75">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="idade">Idade</label>
+                    <div class="input-field">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="number" id="idade" min="0" placeholder="Ex: 25">
+                    </div>
+                </div>
+
+                <div class="gender-memory-style">
+                    <button type="button" id="btnGeneroHomem" class="gender-m1" onclick="selecionarGenero('homem')">Homem</button>
+                    <button type="button" id="btnGeneroMulher" class="gender-m2 active-gender-m2" onclick="selecionarGenero('mulher')">Mulher</button>
+                </div>
+
+                <button class="btn btn-primary" onclick="calcularIMCAtual()">Calcular IMC</button>
+
+                <div class="result-box">
+                    <div class="result-item">
+                        <strong>Peso Ideal</strong>
+                        <span id="pesoIdeal">—</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>IMC</strong>
+                        <span id="imc">—</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>Classificação</strong>
+                        <span id="classificacao">—</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>Recomendação</strong>
+                        <span id="recomendacao">—</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>Perda sugerida por semana</strong>
+                        <span id="ritmoSaudavel">—</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>Tempo estimado</strong>
+                        <span id="tempoEstimado">—</span>
+                    </div>
+                </div>
+
+                <div id="planoReceitaWrap" class="recipe-box hidden">
+                    <button class="btn btn-secondary" type="button" onclick="alternarPlanoReceita()">
+                        Ver / Esconder plano alimentar
+                    </button>
+
+                    <div id="planoReceitaConteudo" class="recipe-content hidden">
+                        <h3>Ementa Cetogénica fase 1 Semanal (Sem Glúten) 2</h3>
+                        <p>Plano alimentar equilibrado para manter um estilo de vida saudável, com pequeno almoço, almoço, jantar e snacks opcionais.</p>
+
+                        <h4>Segunda-feira</h4>
+                        <ul>
+                            <li>PA: Omelete com bacon (2-3 ovos + 100 gr bacon), queijo de mozarela (150gr) e chá curcuma</li>
+                            <li>Almoço: Pescada grelhada (300 gr) + legumes salteados na manteiga (250gr) com feijão</li>
+                            <li>Snack: pistachos (60 gr) + café preto sem açúcar</li>
+                            <li>Jantar: Peito de peru grelhado com molho de mostarda (250 – 300 gr) + salada verde (350 gr)</li>
+                        </ul>
+
+                        <h4>Terça-feira</h4>
+                        <ul>
+                            <li>PA: Iogurte grego (250-300 ml) + sesamo/abobora (2 colheres) + coco ralado (2 colheres)</li>
+                            <li>Almoço: Almôndegas de vaca (250-300gr) em molho de tomate + arroz de couve flor (300gr)</li>
+                            <li>Snack: Queijo de serra/emental (100 gr) + torresmos caseiros (60 gr)</li>
+                            <li>Jantar: Omelete de cogumelos e queijo (3-4 ovos + 150 gr cogumelos) e abacate (1 und)</li>
+                        </ul>
+
+                        <h4>Quarta-feira</h4>
+                        <ul>
+                            <li>PA: Chá preto (250 ml) + ovos mexidos com cebola e tomate (3-4 ovos) com abacate (1 und)</li>
+                            <li>Almoço: Dourada/robalo grelhado (posta natural 300gr) + esparregado sem farinha (300gr)</li>
+                            <li>Snack: Macadâmias (60 gr)</li>
+                            <li>Jantar: Bife grelhado(250-300gr) + feijão verde com alho (300 gr)</li>
+                        </ul>
+
+                        <h4>Quinta-feira</h4>
+                        <ul>
+                            <li>PA: Smoothie de leite de coco, abacate e cacau (250-300 ml)</li>
+                            <li>Almoço: Peixe espada grelhado (250-300gr) + salada grega (250 gr)</li>
+                            <li>Snack: palitos de cenoura e aipo com pasta de molho aioli ou queijo (100gr)</li>
+                            <li>Jantar: Frango forno (250-300 gr) + salada de rúcula e nozes (300 gr)</li>
+                        </ul>
+
+                        <h4>Sexta-feira</h4>
+                        <ul>
+                            <li>PA: Ovos cozidos (3 -4 und) + tomate cherry (1 und) queijo feta + café preto taça sem açúcar</li>
+                            <li>Almoço: Hambúrguer artesanal (sem pão) (250-300gr) + salada pimentos salteados (300gr)</li>
+                            <li>Snack: Castanhas-do-pará (60 gr)</li>
+                            <li>Jantar: Sopa low-carb (canja 300-350 ml) + omelete de queijos e salsa (3-4 ovos)</li>
+                        </ul>
+
+                        <h4>Sábado</h4>
+                        <ul>
+                            <li>PA: Panquecas cetogénicas (3-4 ovos + farinha de amêndoas 150 gr) + manteiga e canela</li>
+                            <li>Almoço: Bacalhau grelhado (300-400gr) + brócolos gratinados</li>
+                            <li>Snack: Queijo (80-100 gr) + pistachos (60 gr)</li>
+                            <li>Jantar: Asas de frango em molho picante (300gr) com abacate e azeite</li>
+                        </ul>
+
+                        <h4>Domingo</h4>
+                        <ul>
+                            <li>PA: Café com óleo de coco (bulletproof) (2- colheres) + avos mexidos col alheira artesanal (3-4 ovos)</li>
+                            <li>Almoço: Pernil de porco (300-350 gr) + legumes low-carb (300-350 gr)</li>
+                            <li>Snack: Chocolate 85% (50 -60gr) + chá de curcuma e gengibre</li>
+                            <li>Jantar: Creme de cebola e cogumelos (300 ml) + salmão grelhado (posta de 250-300 gr) e alface iceberg.</li>
+                        </ul>
+
+                        <h4>Lista de Compras Base</h4>
+                        <ul>
+                            <li>Ovos</li>
+                            <li>Frango, carne vermelha magra, peixe (salmão, peixe espada, dourada ou bacalhau)</li>
+                            <li>Legumes: brócolos, espinafre, couve-flor, aipo, cogumelos, pimentos, cebola</li>
+                            <li>Abacate, azeite oliva, óleo de coco</li>
+                            <li>Queijos de vários tipos, iogurte grego sem açúcar</li>
+                            <li>Frutos secos (amêndoas, nozes, castanhas, pistachos)</li>
+                            <li>Frutas low-carb (morango, framboesa, abacate, coco)</li>
+                            <li>Leite de coco / amêndoas</li>
+                            <li>Ervas, especiarias e sal marinho</li>
+                        </ul>
+
+                        <p><strong>Dica:</strong> mantenha-se hidratada, escute seu corpo e aproveite o processo com leveza.</p>
+                    </div>
+                </div>
+
+                <p class="note">Válido para idades entre os 20 e os 65 anos.</p>
+            </section>
+
+            <!-- MÉDIA -->
+            <section class="card">
+                <h2>Média de Notas</h2>
+                <p class="subtitle">Escolha o tipo de cálculo, o intervalo e o número de notas.</p>
+
+                <div class="toggle-row">
+                    <button type="button" id="btnModoMedia" class="toggle-active" onclick="selecionarModoNotas('media')">Média</button>
+                    <button type="button" id="btnModoPeso" onclick="selecionarModoNotas('peso')">Peso</button>
+                </div>
+
+                <div class="toggle-row">
+                    <button type="button" id="btnEscala20" onclick="selecionarEscalaNotas(20)">0–20</button>
+                    <button type="button" id="btnEscala100" class="toggle-active" onclick="selecionarEscalaNotas(100)">0–100</button>
+                </div>
+
+                <div class="input-group">
+                    <label for="quantidadeNotas">Nº de notas (2 a 10)</label>
+                    <div class="input-field">
+                        <i class="fa-solid fa-list-ol"></i>
+                        <input type="number" id="quantidadeNotas" min="2" max="10" placeholder="Ex: 4">
+                    </div>
+                </div>
+
+                <div class="button-stack">
+                    <button class="btn btn-secondary" onclick="gerarCamposNotas()">Gerar</button>
+                    <button class="btn btn-primary" onclick="calcularMediaDinamica()">Calcular</button>
+                </div>
+
+                <div id="camposNotas"></div>
+
+                <div id="somaPesosWrap" class="peso-sum hidden">
+                    <strong>Soma dos pesos:</strong>
+                    <span id="somaPesosTexto">0 / 1</span>
+                </div>
+
+                <div class="result-box">
+                    <div class="result-item">
+                        <strong id="rotuloResultadoNotas">Média</strong>
+                        <span id="media">—</span>
+                    </div>
+                    <div id="status" class="status vazio">Aguardando cálculo</div>
+                </div>
+            </section>
+
+            <!-- CIRCUNFERÊNCIA -->
+            <section class="card">
+                <h2>Circunferência</h2>
+                <p class="subtitle">Calcule o perímetro e a área.</p>
+
+                <div class="input-group">
+                    <label for="raio">Raio</label>
+                    <div class="input-field">
+                        <i class="fa-solid fa-circle"></i>
+                        <input type="number" id="raio" min="0" step="0.01" placeholder="Ex: 5">
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="calcularCircunferencia()">Calcular</button>
+
+                <div class="result-box">
+                    <div class="result-item">
+                        <strong>Perímetro</strong>
+                        <span id="perimetro">—</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>Área</strong>
+                        <span id="area">—</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DATAS -->
+            <section class="card">
+                <h2>Diferença de Datas</h2>
+                <p class="subtitle">Compare duas datas.</p>
+
+                <div class="input-group">
+                    <label for="data1">Data inicial</label>
+                    <div class="input-field">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <input type="date" id="data1">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="data2">Data final</label>
+                    <div class="input-field">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <input type="date" id="data2">
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="calcularDatas()">Calcular</button>
+
+                <div class="result-box">
+                    <div class="result-item">
+                        <strong>Anos / Meses / Dias</strong>
+                        <span id="amd">—</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>Meses / Dias</strong>
+                        <span id="md">—</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>Total de dias</strong>
+                        <span id="dias">—</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
