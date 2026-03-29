@@ -4,23 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora Multifunções</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header class="page-header">
             <h1>Calculadora Multifunções</h1>
-            <p>Média de notas, operações, IMC, circunferência e diferença entre datas.</p>
+            <p>Operações, IMC, redes, diferença de datas e média de notas.</p>
         </header>
 
         <main class="grid">
             <!-- OPERAÇÕES -->
             <section class="card card-operations">
                 <h2>Operações</h2>
-                <p class="subtitle">
-                    Introduza os valores, aplique funções se quiser, e depois escolha uma operação básica.
-                </p>
+                <p class="subtitle">Introduza os valores, aplique funções se quiser e depois escolha uma operação básica.</p>
 
                 <button class="btn btn-secondary help-toggle" type="button" onclick="alternarAjudaOperacoes()">
                     Mostrar / Esconder ajuda
@@ -29,35 +26,16 @@
                 <div id="ajudaOperacoes" class="help-box hidden">
                     <h3>Como usar</h3>
                     <p>
-                        1. Introduza <strong>Valor 1</strong> e <strong>Valor 2</strong>.<br>
-                        2. Pode escrever números, decimais ou frações, por exemplo <strong>3/4</strong>.<br>
-                        3. Também pode usar π, e, M1, M2, o teclado numérico e o botão <strong>/</strong> para escrever frações.<br>
-                        4. As funções científicas atuam diretamente sobre o campo ativo.<br>
-                        5. Escolha uma operação básica: <strong>+</strong>, <strong>−</strong>, <strong>×</strong> ou <strong>÷</strong>.
+                        Introduza <strong>Valor 1</strong> e <strong>Valor 2</strong>.<br>
+                        Pode escrever números, decimais ou frações, por exemplo <strong>3/4</strong>.<br>
+                        O botão <strong>2G</strong> abre a resolução da equação do 2.º grau.<br>
+                        As memórias <strong>M1</strong> e <strong>M2</strong> também funcionam em <strong>a</strong>, <strong>b</strong> e <strong>c</strong>.
                     </p>
-
-                    <h3>Funções avançadas mostradas automaticamente</h3>
-                    <p>
-                        Fração irredutível, √(v1), √(v2), [v1]√(v2), log₍v1₎(v2), v1!, v2!, C(v1, v2), A(v1, v2), m.d.c.(v1, v2), m.m.c.(v1, v2), fatorização em fatores primos de v1 e v2, resto da divisão.
-                    </p>
-
-                    <h3>Condições</h3>
-                    <ul>
-                        <li>√(v1) e √(v2) só aparecem se o valor for ≥ 0.</li>
-                        <li>[v1]√(v2) exige v1 inteiro e v1 ≥ 2. Se v2 for negativo, v1 tem de ser ímpar.</li>
-                        <li>log₍v1₎(v2) exige v1 > 0, v1 ≠ 1 e v2 > 0.</li>
-                        <li>Fatoriais só aparecem para inteiros ≥ 0.</li>
-                        <li>Combinações e arranjos exigem v1 e v2 inteiros e v1 ≥ v2 ≥ 0.</li>
-                        <li>m.d.c. e m.m.c. usam os valores absolutos dos inteiros.</li>
-                        <li>cos⁻¹ e sen⁻¹ só funcionam para valores entre -1 e 1.</li>
-                        <li>√ só funciona nos reais para valores ≥ 0.</li>
-                    </ul>
                 </div>
 
                 <div class="input-group">
                     <label for="v1">Valor 1</label>
                     <div class="input-field" id="fieldWrap1">
-                        <i class="fa-solid fa-calculator"></i>
                         <input type="text" id="v1" inputmode="text" placeholder="Digite um número ou fração">
                     </div>
                 </div>
@@ -65,7 +43,6 @@
                 <div class="input-group">
                     <label for="v2">Valor 2</label>
                     <div class="input-field" id="fieldWrap2">
-                        <i class="fa-solid fa-calculator"></i>
                         <input type="text" id="v2" inputmode="text" placeholder="Digite um número ou fração">
                     </div>
                 </div>
@@ -79,11 +56,11 @@
                 </div>
 
                 <div class="memory-status">
-                    <div class="memory-chip memory-chip-m1" id="memoryChip1">
+                    <div class="memory-chip" id="memoryChip1">
                         <strong>M1</strong>
                         <span id="memoria1Valor">vazia</span>
                     </div>
-                    <div class="memory-chip memory-chip-m2" id="memoryChip2">
+                    <div class="memory-chip" id="memoryChip2">
                         <strong>M2</strong>
                         <span id="memoria2Valor">vazia</span>
                     </div>
@@ -106,7 +83,27 @@
                     <button type="button" onclick="inserirTextoNoCampo('/')">/</button>
                     <button type="button" onclick="inserirTextoNoCampo('-')">−</button>
                     <button type="button" onclick="apagarUltimoDoCampo()">⌫</button>
-                    <button type="button" onclick="limparCampoAtivo()">C</button>
+                    <button type="button" id="btn2G" class="operator-promote" onclick="alternarPainel2G()">2G</button>
+                </div>
+
+                <div id="painel2G" class="quad-panel hidden">
+                    <div class="quad-formula">
+                        <span>a</span>
+                        <input type="text" id="coefA" inputmode="text" placeholder="a">
+                        <span>x² +</span>
+
+                        <span>b</span>
+                        <input type="text" id="coefB" inputmode="text" placeholder="b">
+                        <span>x +</span>
+
+                        <span>c</span>
+                        <input type="text" id="coefC" inputmode="text" placeholder="c">
+                        <span>= 0</span>
+
+                        <button type="button" class="btn-exe" onclick="executarSegundoGrau()">EXE</button>
+                    </div>
+
+                    <div id="resultado2G" class="quad-result hidden"></div>
                 </div>
 
                 <div class="sci-grid">
@@ -126,10 +123,10 @@
                 <div id="mensagemOperacoes" class="math-message hidden"></div>
 
                 <div class="operator-grid">
-                    <button type="button" id="btnSoma" onclick="somar()">+</button>
-                    <button type="button" id="btnSubtracao" onclick="subtrair()">−</button>
-                    <button type="button" id="btnMultiplicacao" onclick="multiplicar()">×</button>
-                    <button type="button" id="btnDivisao" onclick="dividir()">÷</button>
+                    <button type="button" id="btnSoma" class="operator-main" onclick="somar()">+</button>
+                    <button type="button" id="btnSubtracao" class="operator-main" onclick="subtrair()">−</button>
+                    <button type="button" id="btnMultiplicacao" class="operator-main" onclick="multiplicar()">×</button>
+                    <button type="button" id="btnDivisao" class="operator-main" onclick="dividir()">÷</button>
                 </div>
 
                 <div class="result-box">
@@ -145,7 +142,6 @@
                 <div class="input-group">
                     <label for="altura">Altura (m)</label>
                     <div class="input-field">
-                        <i class="fa-solid fa-ruler-vertical"></i>
                         <input type="number" id="altura" step="0.01" placeholder="Ex: 1.80">
                     </div>
                 </div>
@@ -153,7 +149,6 @@
                 <div class="input-group">
                     <label for="peso">Peso (kg)</label>
                     <div class="input-field">
-                        <i class="fa-solid fa-weight-scale"></i>
                         <input type="number" id="peso" step="0.01" placeholder="Ex: 75">
                     </div>
                 </div>
@@ -161,7 +156,6 @@
                 <div class="input-group">
                     <label for="idade">Idade</label>
                     <div class="input-field">
-                        <i class="fa-solid fa-user"></i>
                         <input type="number" id="idade" min="0" placeholder="Ex: 25">
                     </div>
                 </div>
@@ -174,30 +168,12 @@
                 <button class="btn btn-primary" onclick="calcularIMCAtual()">Calcular IMC</button>
 
                 <div class="result-box">
-                    <div class="result-item">
-                        <strong>Peso Ideal</strong>
-                        <span id="pesoIdeal">—</span>
-                    </div>
-                    <div class="result-item">
-                        <strong>IMC</strong>
-                        <span id="imc">—</span>
-                    </div>
-                    <div class="result-item">
-                        <strong>Classificação</strong>
-                        <span id="classificacao">—</span>
-                    </div>
-                    <div class="result-item">
-                        <strong>Recomendação</strong>
-                        <span id="recomendacao">—</span>
-                    </div>
-                    <div class="result-item">
-                        <strong>Perda sugerida por semana</strong>
-                        <span id="ritmoSaudavel">—</span>
-                    </div>
-                    <div class="result-item">
-                        <strong>Tempo estimado</strong>
-                        <span id="tempoEstimado">—</span>
-                    </div>
+                    <div class="result-item"><strong>Peso Ideal</strong><span id="pesoIdeal">—</span></div>
+                    <div class="result-item"><strong>IMC</strong><span id="imc">—</span></div>
+                    <div class="result-item"><strong>Classificação</strong><span id="classificacao">—</span></div>
+                    <div class="result-item"><strong>Recomendação</strong><span id="recomendacao">—</span></div>
+                    <div class="result-item"><strong>Perda sugerida por semana</strong><span id="ritmoSaudavel">—</span></div>
+                    <div class="result-item"><strong>Tempo estimado</strong><span id="tempoEstimado">—</span></div>
                 </div>
 
                 <div id="planoReceitaWrap" class="recipe-box hidden">
@@ -207,193 +183,247 @@
 
                     <div id="planoReceitaConteudo" class="recipe-content hidden">
                         <h3>Ementa Cetogénica fase 1 Semanal (Sem Glúten) 2</h3>
-                        <p>Plano alimentar equilibrado para manter um estilo de vida saudável, com pequeno almoço, almoço, jantar e snacks opcionais.</p>
-
+                        <p>Plano alimentar equilibrado para manter um estilo de vida saudável.</p>
                         <h4>Segunda-feira</h4>
                         <ul>
-                            <li>PA: Omelete com bacon (2-3 ovos + 100 gr bacon), queijo de mozarela (150gr) e chá curcuma</li>
-                            <li>Almoço: Pescada grelhada (300 gr) + legumes salteados na manteiga (250gr) com feijão</li>
-                            <li>Snack: pistachos (60 gr) + café preto sem açúcar</li>
-                            <li>Jantar: Peito de peru grelhado com molho de mostarda (250 – 300 gr) + salada verde (350 gr)</li>
+                            <li>PA: Omelete com bacon, queijo mozarela e chá de curcuma</li>
+                            <li>Almoço: Pescada grelhada com legumes salteados</li>
+                            <li>Snack: Pistachos e café sem açúcar</li>
+                            <li>Jantar: Peito de peru grelhado com salada verde</li>
                         </ul>
-
-                        <h4>Terça-feira</h4>
-                        <ul>
-                            <li>PA: Iogurte grego (250-300 ml) + sesamo/abobora (2 colheres) + coco ralado (2 colheres)</li>
-                            <li>Almoço: Almôndegas de vaca (250-300gr) em molho de tomate + arroz de couve flor (300gr)</li>
-                            <li>Snack: Queijo de serra/emental (100 gr) + torresmos caseiros (60 gr)</li>
-                            <li>Jantar: Omelete de cogumelos e queijo (3-4 ovos + 150 gr cogumelos) e abacate (1 und)</li>
-                        </ul>
-
-                        <h4>Quarta-feira</h4>
-                        <ul>
-                            <li>PA: Chá preto (250 ml) + ovos mexidos com cebola e tomate (3-4 ovos) com abacate (1 und)</li>
-                            <li>Almoço: Dourada/robalo grelhado (posta natural 300gr) + esparregado sem farinha (300gr)</li>
-                            <li>Snack: Macadâmias (60 gr)</li>
-                            <li>Jantar: Bife grelhado(250-300gr) + feijão verde com alho (300 gr)</li>
-                        </ul>
-
-                        <h4>Quinta-feira</h4>
-                        <ul>
-                            <li>PA: Smoothie de leite de coco, abacate e cacau (250-300 ml)</li>
-                            <li>Almoço: Peixe espada grelhado (250-300gr) + salada grega (250 gr)</li>
-                            <li>Snack: palitos de cenoura e aipo com pasta de molho aioli ou queijo (100gr)</li>
-                            <li>Jantar: Frango forno (250-300 gr) + salada de rúcula e nozes (300 gr)</li>
-                        </ul>
-
-                        <h4>Sexta-feira</h4>
-                        <ul>
-                            <li>PA: Ovos cozidos (3 -4 und) + tomate cherry (1 und) queijo feta + café preto taça sem açúcar</li>
-                            <li>Almoço: Hambúrguer artesanal (sem pão) (250-300gr) + salada pimentos salteados (300gr)</li>
-                            <li>Snack: Castanhas-do-pará (60 gr)</li>
-                            <li>Jantar: Sopa low-carb (canja 300-350 ml) + omelete de queijos e salsa (3-4 ovos)</li>
-                        </ul>
-
-                        <h4>Sábado</h4>
-                        <ul>
-                            <li>PA: Panquecas cetogénicas (3-4 ovos + farinha de amêndoas 150 gr) + manteiga e canela</li>
-                            <li>Almoço: Bacalhau grelhado (300-400gr) + brócolos gratinados</li>
-                            <li>Snack: Queijo (80-100 gr) + pistachos (60 gr)</li>
-                            <li>Jantar: Asas de frango em molho picante (300gr) com abacate e azeite</li>
-                        </ul>
-
-                        <h4>Domingo</h4>
-                        <ul>
-                            <li>PA: Café com óleo de coco (bulletproof) (2- colheres) + avos mexidos col alheira artesanal (3-4 ovos)</li>
-                            <li>Almoço: Pernil de porco (300-350 gr) + legumes low-carb (300-350 gr)</li>
-                            <li>Snack: Chocolate 85% (50 -60gr) + chá de curcuma e gengibre</li>
-                            <li>Jantar: Creme de cebola e cogumelos (300 ml) + salmão grelhado (posta de 250-300 gr) e alface iceberg.</li>
-                        </ul>
-
-                        <h4>Lista de Compras Base</h4>
-                        <ul>
-                            <li>Ovos</li>
-                            <li>Frango, carne vermelha magra, peixe (salmão, peixe espada, dourada ou bacalhau)</li>
-                            <li>Legumes: brócolos, espinafre, couve-flor, aipo, cogumelos, pimentos, cebola</li>
-                            <li>Abacate, azeite oliva, óleo de coco</li>
-                            <li>Queijos de vários tipos, iogurte grego sem açúcar</li>
-                            <li>Frutos secos (amêndoas, nozes, castanhas, pistachos)</li>
-                            <li>Frutas low-carb (morango, framboesa, abacate, coco)</li>
-                            <li>Leite de coco / amêndoas</li>
-                            <li>Ervas, especiarias e sal marinho</li>
-                        </ul>
-
-                        <p><strong>Dica:</strong> mantenha-se hidratada, escute seu corpo e aproveite o processo com leveza.</p>
                     </div>
                 </div>
 
                 <p class="note">Válido para idades entre os 20 e os 65 anos.</p>
             </section>
 
-            <!-- MÉDIA -->
-            <section class="card">
-                <h2>Média de Notas</h2>
-                <p class="subtitle">Escolha o tipo de cálculo, o intervalo e o número de notas.</p>
+            <!-- REDES -->
+            <section class="card card-network">
+                <h2>Calculadora de IP, Subnetting e Informação de Rede</h2>
+                <p class="subtitle">Exercício manual de redes.</p>
 
-                <div class="toggle-row">
-                    <button type="button" id="btnModoMedia" class="toggle-active" onclick="selecionarModoNotas('media')">Média</button>
-                    <button type="button" id="btnModoPeso" onclick="selecionarModoNotas('peso')">Peso</button>
-                </div>
+                <div class="network-box">
+                    <h3>Secção A — Introdução do exercício</h3>
 
-                <div class="toggle-row">
-                    <button type="button" id="btnEscala20" onclick="selecionarEscalaNotas(20)">0–20</button>
-                    <button type="button" id="btnEscala100" class="toggle-active" onclick="selecionarEscalaNotas(100)">0–100</button>
-                </div>
+                    <label class="mini-label">IPv4</label>
+                    <div class="ip-inline-tools">
+                        <div class="octet-row" id="ipRow">
+                            <input type="text" maxlength="3" inputmode="numeric" id="ip1" class="octet">
+                            <span>.</span>
+                            <input type="text" maxlength="3" inputmode="numeric" id="ip2" class="octet">
+                            <span>.</span>
+                            <input type="text" maxlength="3" inputmode="numeric" id="ip3" class="octet">
+                            <span>.</span>
+                            <input type="text" maxlength="3" inputmode="numeric" id="ip4" class="octet">
+                        </div>
 
-                <div class="input-group">
-                    <label for="quantidadeNotas">Nº de notas (2 a 10)</label>
-                    <div class="input-field">
-                        <i class="fa-solid fa-list-ol"></i>
-                        <input type="number" id="quantidadeNotas" min="2" max="10" placeholder="Ex: 4">
+                        <button class="paste-ip-btn" type="button" onclick="colarIpDoClipboard()" title="Colar IPv4 do clipboard">
+                            Colar IP
+                        </button>
+                    </div>
+
+                    <div id="ipPasteMessage" class="inline-message hidden">
+                        <span id="ipPasteMessageText"></span>
+                        <button type="button" class="inline-message-close" onclick="fecharMensagemColarIp()">Fechar</button>
+                    </div>
+
+                    <label class="mini-label">Máscara</label>
+                    <div class="octet-row" id="maskRow">
+                        <input type="text" maxlength="3" inputmode="numeric" id="mask1" class="octet">
+                        <span>.</span>
+                        <input type="text" maxlength="3" inputmode="numeric" id="mask2" class="octet">
+                        <span>.</span>
+                        <input type="text" maxlength="3" inputmode="numeric" id="mask3" class="octet">
+                        <span>.</span>
+                        <input type="text" maxlength="3" inputmode="numeric" id="mask4" class="octet">
+                    </div>
+
+                    <div class="cidr-row">
+                        <label for="cidrSelect">CIDR</label>
+                        <select id="cidrSelect"></select>
+                    </div>
+
+                    <div id="networkError" class="math-message hidden"></div>
+
+                    <div class="network-actions">
+                        <button class="btn btn-primary" type="button" onclick="calcularRede()">Calcular</button>
+                        <button class="btn btn-secondary" type="button" onclick="limparExercicioRede()">Limpar exercício</button>
+                        <button class="btn btn-secondary" type="button" onclick="copiarInfoRede()">Copiar informação</button>
                     </div>
                 </div>
 
-                <div class="button-stack">
-                    <button class="btn btn-secondary" onclick="gerarCamposNotas()">Gerar</button>
-                    <button class="btn btn-primary" onclick="calcularMediaDinamica()">Calcular</button>
-                </div>
-
-                <div id="camposNotas"></div>
-
-                <div id="somaPesosWrap" class="peso-sum hidden">
-                    <strong>Soma dos pesos:</strong>
-                    <span id="somaPesosTexto">0 / 1</span>
-                </div>
-
-                <div class="result-box">
-                    <div class="result-item">
-                        <strong id="rotuloResultadoNotas">Média</strong>
-                        <span id="media">—</span>
+                <div id="networkAnalysis" class="network-box hidden">
+                    <h3>Secção B — Análise do IP</h3>
+                    <div class="network-info-grid">
+                        <div class="result-item"><strong>Estado</strong><span id="netEstado">—</span></div>
+                        <div class="result-item"><strong>Classe</strong><span id="netClasse">—</span></div>
+                        <div class="result-item"><strong>Categoria</strong><span id="netCategoria">—</span></div>
+                        <div class="result-item"><strong>Tipo</strong><span id="netTipo">—</span></div>
                     </div>
-                    <div id="status" class="status vazio">Aguardando cálculo</div>
+                </div>
+
+                <div id="networkResults" class="network-box hidden">
+                    <h3>Secção C — Dados da rede</h3>
+
+                    <div class="network-actions network-actions-two">
+                        <button class="btn btn-secondary" type="button" onclick="alternarExplicacaoRede()">Explicação</button>
+                    </div>
+
+                    <div class="network-info-grid">
+                        <div class="result-item"><strong>Network</strong><span id="netAddress">—</span></div>
+                        <div class="result-item"><strong>Broadcast</strong><span id="broadcastAddress">—</span></div>
+                        <div class="result-item"><strong>Primeiro host</strong><span id="firstHost">—</span></div>
+                        <div class="result-item"><strong>Último host</strong><span id="lastHost">—</span></div>
+                        <div class="result-item"><strong>Hosts utilizáveis</strong><span id="usableHosts">—</span></div>
+                        <div class="result-item"><strong>Máscara / CIDR</strong><span id="maskCidrInfo">—</span></div>
+                    </div>
+
+                    <div id="networkSpecialMessage" class="math-message hidden"></div>
+
+                    <div id="explicacaoRedeWrap" class="explanation-box hidden">
+                        <div id="explicacaoRedeConteudo"></div>
+                    </div>
+                </div>
+
+                <div id="subnetSection" class="network-box hidden">
+                    <h3>Secção D — Calculadora de Subnetting e Divisão de Redes</h3>
+                    <p class="subtitle small-subtitle">
+                        A rede calculada acima passa automaticamente a ser a rede base para subnetting.
+                    </p>
+
+                    <div class="subnet-modes subnet-modes-three">
+                        <button type="button" id="modeSubnets" class="toggle-active" onclick="selecionarModoSubnet('subnets')">Modo 1 — Sub-redes</button>
+                        <button type="button" id="modeHosts" onclick="selecionarModoSubnet('hosts')">Modo 2 — Hosts</button>
+                        <button type="button" id="modeVlsm" onclick="selecionarModoSubnet('vlsm')">Modo 3 — VLSM</button>
+                    </div>
+
+                    <div id="subnetModeSubnets" class="subnet-panel">
+                        <div class="input-group">
+                            <label for="wantedSubnets">Quantidade de sub-redes</label>
+                            <div class="input-field">
+                                <input type="text" id="wantedSubnets" inputmode="numeric" placeholder="Ex: 4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="subnetModeHosts" class="subnet-panel hidden">
+                        <div class="input-group">
+                            <label for="wantedHosts">Hosts por sub-rede</label>
+                            <div class="input-field">
+                                <input type="text" id="wantedHosts" inputmode="numeric" placeholder="Ex: 30">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="subnetModeVlsm" class="subnet-panel hidden">
+                        <div class="cidr-row">
+                            <label for="sectorCount">Número de setores</label>
+                            <select id="sectorCount" onchange="gerarSetoresVLSM()">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                        <div id="vlsmRows"></div>
+                    </div>
+
+                    <div id="subnetError" class="math-message hidden"></div>
+
+                    <div class="network-actions">
+                        <button class="btn btn-primary" type="button" onclick="calcularSubnetting()">Calcular subnetting</button>
+                        <button class="btn btn-secondary" type="button" onclick="copiarResultadosSubnet()">Copiar resultados</button>
+                        <button class="btn btn-secondary" type="button" onclick="limparExercicioRede()">Limpar exercício</button>
+                    </div>
+
+                    <div id="subnetSummary" class="result-box hidden"></div>
+                    <div id="subnetTableWrap" class="table-wrap hidden"></div>
+                </div>
+
+                <div class="network-box">
+                    <h3>Secção F — Estado da ligação</h3>
+                    <div class="network-actions network-actions-single">
+                        <button class="btn btn-secondary" type="button" onclick="abrirSpeedtest()">Testar a velocidade</button>
+                    </div>
                 </div>
             </section>
 
-            <!-- CIRCUNFERÊNCIA -->
-            <section class="card">
-                <h2>Circunferência</h2>
-                <p class="subtitle">Calcule o perímetro e a área.</p>
+            <!-- COLUNA DIREITA EM BAIXO -->
+            <div class="stack-column">
+                <!-- DATAS -->
+                <section class="card stack-card">
+                    <h2>Diferença de Datas</h2>
+                    <p class="subtitle">Compare duas datas.</p>
 
-                <div class="input-group">
-                    <label for="raio">Raio</label>
-                    <div class="input-field">
-                        <i class="fa-solid fa-circle"></i>
-                        <input type="number" id="raio" min="0" step="0.01" placeholder="Ex: 5">
+                    <div class="input-group">
+                        <label for="data1">Data inicial</label>
+                        <div class="input-field">
+                            <input type="date" id="data1">
+                        </div>
                     </div>
-                </div>
 
-                <button class="btn btn-primary" onclick="calcularCircunferencia()">Calcular</button>
+                    <div class="input-group">
+                        <label for="data2">Data final</label>
+                        <div class="input-field">
+                            <input type="date" id="data2">
+                        </div>
+                    </div>
 
-                <div class="result-box">
-                    <div class="result-item">
-                        <strong>Perímetro</strong>
-                        <span id="perimetro">—</span>
-                    </div>
-                    <div class="result-item">
-                        <strong>Área</strong>
-                        <span id="area">—</span>
-                    </div>
-                </div>
-            </section>
+                    <button class="btn btn-primary" onclick="calcularDatas()">Calcular</button>
 
-            <!-- DATAS -->
-            <section class="card">
-                <h2>Diferença de Datas</h2>
-                <p class="subtitle">Compare duas datas.</p>
+                    <div class="result-box">
+                        <div class="result-item"><strong>Anos / Meses / Dias</strong><span id="amd">—</span></div>
+                        <div class="result-item"><strong>Meses / Dias</strong><span id="md">—</span></div>
+                        <div class="result-item"><strong>Total de dias</strong><span id="dias">—</span></div>
+                    </div>
+                </section>
 
-                <div class="input-group">
-                    <label for="data1">Data inicial</label>
-                    <div class="input-field">
-                        <i class="fa-solid fa-calendar-days"></i>
-                        <input type="date" id="data1">
-                    </div>
-                </div>
+                <!-- MÉDIA -->
+                <section class="card stack-card">
+                    <h2>Média de Notas</h2>
+                    <p class="subtitle">Escolha o tipo de cálculo, o intervalo e o número de notas.</p>
 
-                <div class="input-group">
-                    <label for="data2">Data final</label>
-                    <div class="input-field">
-                        <i class="fa-solid fa-calendar-days"></i>
-                        <input type="date" id="data2">
+                    <div class="toggle-row">
+                        <button type="button" id="btnModoMedia" class="toggle-active" onclick="selecionarModoNotas('media')">Média</button>
+                        <button type="button" id="btnModoPeso" onclick="selecionarModoNotas('peso')">Peso</button>
                     </div>
-                </div>
 
-                <button class="btn btn-primary" onclick="calcularDatas()">Calcular</button>
+                    <div class="toggle-row">
+                        <button type="button" id="btnEscala20" onclick="selecionarEscalaNotas(20)">0–20</button>
+                        <button type="button" id="btnEscala100" class="toggle-active" onclick="selecionarEscalaNotas(100)">0–100</button>
+                    </div>
 
-                <div class="result-box">
-                    <div class="result-item">
-                        <strong>Anos / Meses / Dias</strong>
-                        <span id="amd">—</span>
+                    <div class="input-group">
+                        <label for="quantidadeNotas">Nº de notas (2 a 10)</label>
+                        <div class="input-field">
+                            <input type="number" id="quantidadeNotas" min="2" max="10" placeholder="Ex: 4">
+                        </div>
                     </div>
-                    <div class="result-item">
-                        <strong>Meses / Dias</strong>
-                        <span id="md">—</span>
+
+                    <div class="button-stack">
+                        <button class="btn btn-secondary" onclick="gerarCamposNotas()">Gerar</button>
+                        <button class="btn btn-primary" onclick="calcularMediaDinamica()">Calcular</button>
                     </div>
-                    <div class="result-item">
-                        <strong>Total de dias</strong>
-                        <span id="dias">—</span>
+
+                    <div id="camposNotas"></div>
+
+                    <div id="somaPesosWrap" class="peso-sum hidden">
+                        <strong>Soma dos pesos:</strong>
+                        <span id="somaPesosTexto">0 / 1</span>
                     </div>
-                </div>
-            </section>
+
+                    <div class="result-box">
+                        <div class="result-item"><strong id="rotuloResultadoNotas">Média</strong><span id="media">—</span></div>
+                        <div id="status" class="status vazio">Aguardando cálculo</div>
+                    </div>
+                </section>
+            </div>
         </main>
     </div>
 
